@@ -9,8 +9,19 @@ import youtube as yt
 
 queue = []
 loop = False
-client = commands.Bot(command_prefix="!")
 FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+
+
+# Change only the no_category default string
+help_command = commands.DefaultHelpCommand(
+    no_category='Player'
+)
+
+# Create the bot and pass it the modified help_command
+client = commands.Bot(
+    command_prefix="!",
+    help_command=help_command
+)
 
 
 @client.command(name="play", help="Loads your input and adds it to the queue; If there is no playing track, then it will start playing.")
@@ -115,5 +126,10 @@ async def leave(ctx):
     else:
         await ctx.send("The bot is not connected to a voice channel.")
 
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, discord.ext.commands.errors.CommandNotFound):
+        await ctx.send("No such command. For assistance type, !help")
 
 client.run(os.environ['token'])
