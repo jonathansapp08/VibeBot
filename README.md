@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 macOS
 ```
-brew uninstall ffmpeg
+brew install ffmpeg
 ```
 
 Ubuntu
